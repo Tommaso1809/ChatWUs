@@ -1,13 +1,33 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Broadcast Example</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Socket.IO Broadcast Example</h1>
+    <input id="messageInput" type="text" placeholder="Scrivi un messaggio..." />
+    <button id="sendMessage">Invia Messaggio</button>
+    <ul id="messages"></ul>
+
+    <script>
+        const socket = io();
+
+        document.getElementById('sendMessage').addEventListener('click', () => {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+            socket.emit('message', message);
+            messageInput.value = '';
+        });
+
+        socket.on('message', (msg) => {
+            const messagesList = document.getElementById('messages');
+            const listItem = document.createElement('li');
+            listItem.textContent = msg;
+            messagesList.appendChild(listItem);
+        });
+    </script>
+</body>
 </html>
