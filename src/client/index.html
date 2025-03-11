@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket.IO Broadcast Example</title>
     <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Socket.IO Broadcast Example</h1>
-    <input id="messageInput" type="text" placeholder="Scrivi un messaggio..." />
-    <button id="sendMessage">Invia Messaggio</button>
+
+    <div id="inputForm">
+        <input style="    width: 250px;" id="messageInput" type="text" placeholder="Scrivi un messaggio..." /> &nbsp; &nbsp;
+        <button id="sendMessage">Invia Messaggio</button>
+    </div>
     <ul id="messages"></ul>
 
     <script>

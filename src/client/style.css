@@ -1,0 +1,16 @@
+*{
+    padding: 0px;
+    margin:0px;
+}
+
+input,button{
+
+    border-radius: 10px;
+    border:1px solid rgb(207, 207, 207);
+    text-align: center;
+    padding: 10px;
+}
+
+#inputForm{
+    margin: 20px;
+}
