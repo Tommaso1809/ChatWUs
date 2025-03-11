@@ -1,9 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "index.ts",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "nodemon --exec ts-node index.ts"
   },
   "keywords": [],
   "author": "",
