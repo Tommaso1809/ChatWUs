@@ -8,23 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div id="inputForm">
-        <input style="    width: 250px;" id="messageInput" type="text" placeholder="Scrivi un messaggio..." /> &nbsp; &nbsp;
+        <input id="messageInput" type="text" placeholder="Scrivi un messaggio..." />
         <button id="sendMessage">Invia Messaggio</button>
     </div>
     <ul id="messages"></ul>
 
     <script>
         const socket = io();
-
         document.getElementById('sendMessage').addEventListener('click', () => {
             const messageInput = document.getElementById('messageInput');
             const message = messageInput.value;
             socket.emit('message', message);
             messageInput.value = '';
         });
-
         socket.on('message', (msg) => {
             const messagesList = document.getElementById('messages');
             const listItem = document.createElement('li');

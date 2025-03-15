@@ -1,14 +1,17 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
+import path from 'path';
 
 const app = express();
-const serverPort = 3000;
+const serverPort = 49152;
 
 // Create a simple route (optional)
 app.get('/', (_req, res) => {
     res.send('Hello from Express + Socket.io!');
 });
+
+app.use(express.static(path.join(__dirname, '../client')));
 
 // Create an HTTP server from Express
 const httpServer = http.createServer(app);
@@ -21,8 +24,7 @@ io.on('connection', (socket) => {
 
     socket.on('message', (msg) => {
         console.log(`Received message: ${msg}`);
-        // Broadcast the message to other connected clients
-        socket.broadcast.emit('message', msg);
+        io.emit('message', msg); // Everyone, including sender, gets the message
     });
 
     socket.on('disconnect', () => {
