@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
     console.log('A client connected.');
 
     socket.on('message', (msg) => {
-        console.log(`Received message: ${msg}`);
+        console.log(`Received message from ${msg.user}: ${msg.text}`);
         io.emit('message', msg); // Everyone, including sender, gets the message
     });
 

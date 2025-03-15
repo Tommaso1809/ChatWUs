@@ -8,24 +8,44 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    <ul id="messages"></ul>
     <div id="inputForm">
+        <input id="usernameInput" type="text" placeholder="Your name" />
         <input id="messageInput" type="text" placeholder="Scrivi un messaggio..." />
         <button id="sendMessage">Invia Messaggio</button>
     </div>
-    <ul id="messages"></ul>
-
     <script>
         const socket = io();
+        const userColors = {};
+
+        function getUsernameColor(username) {
+            if (!userColors[username]) {
+                const colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'];
+                userColors[username] = colors[Math.floor(Math.random() * colors.length)];
+            }
+            return userColors[username];
+        }
+
         document.getElementById('sendMessage').addEventListener('click', () => {
+            const usernameInput = document.getElementById('usernameInput');
             const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value;
+            const message = {
+                user: usernameInput.value,
+                text: messageInput.value
+            };
             socket.emit('message', message);
             messageInput.value = '';
         });
+
         socket.on('message', (msg) => {
             const messagesList = document.getElementById('messages');
             const listItem = document.createElement('li');
-            listItem.textContent = msg;
+            const usernameSpan = document.createElement('span');
+            usernameSpan.textContent = `${msg.user}: `;
+            usernameSpan.style.color = getUsernameColor(msg.user);
+            listItem.appendChild(usernameSpan);
+            listItem.appendChild(document.createTextNode(msg.text));
             messagesList.appendChild(listItem);
         });
     </script>
