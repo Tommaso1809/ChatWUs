@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket.IO Broadcast Example</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-    <ul id="messages"></ul>
-    <div id="inputForm">
-        <input id="usernameInput" type="text" placeholder="Your name" maxlength="15" required/>
-        <input id="messageInput" type="text" placeholder="Scrivi un messaggio..." />
-        <button id="sendMessage">Invia Messaggio</button>
-    </div>
-    <script>
-        const socket = io();
+const socket = io();
         const userColors = {};
 
         function getUsernameColor(username) {
@@ -72,6 +54,3 @@
             
             messagesList.appendChild(listItem);
         });
-    </script>
-</body>
-</html>
