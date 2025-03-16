@@ -27,6 +27,16 @@
             return userColors[username];
         }
 
+        // Add this function at the beginning of your script section
+        function formatTime(date) {
+            if (!(date instanceof Date) || isNaN(date.getTime())) {
+                return ""; // Return empty string if date is invalid
+            }
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
         document.getElementById('sendMessage').addEventListener('click', () => {
             const usernameInput = document.getElementById('usernameInput');
             const messageInput = document.getElementById('messageInput');
@@ -51,6 +61,38 @@
             messageInput.value = '';
         });
 
+        // Add event listener for Enter key press
+        document.getElementById('messageInput').addEventListener('keydown', (event) => {
+            // Check if Enter key was pressed (without Shift key for newlines)
+            if (event.key === 'Enter' && !event.shiftKey) {
+                // Prevent default behavior (newline in input)
+                event.preventDefault();
+                
+                // Trigger the same logic as the send button
+                const usernameInput = document.getElementById('usernameInput');
+                const messageInput = document.getElementById('messageInput');
+                
+                if (!usernameInput.value.trim()) {
+                    alert('Please enter your name before sending a message');
+                    usernameInput.focus();
+                    return;
+                }
+                
+                if (!messageInput.value.trim()) {
+                    alert('Please enter a message');
+                    messageInput.focus();
+                    return;
+                }
+                
+                const message = {
+                    user: usernameInput.value,
+                    text: messageInput.value
+                };
+                socket.emit('message', message);
+                messageInput.value = '';
+            }
+        });
+
         socket.on('message', (msg) => {
             const messagesList = document.getElementById('messages');
             const listItem = document.createElement('li');
@@ -66,12 +108,119 @@
             messageDiv.textContent = msg.text;
             messageDiv.classList.add('message-text');
             
+            // Create timestamp element
+            const timestampSpan = document.createElement('span');
+            const messageTime = msg.timestamp ? new Date(msg.timestamp) : new Date();
+            timestampSpan.textContent = formatTime(messageTime);
+            timestampSpan.classList.add('timestamp');
+            
             // Append elements to list item
             listItem.appendChild(usernameSpan);
             listItem.appendChild(messageDiv);
+            listItem.appendChild(timestampSpan);
             
             messagesList.appendChild(listItem);
+            
+            // Auto-scroll to the bottom when new messages arrive
+            messagesList.scrollTop = messagesList.scrollHeight;
         });
+
+        // Add this handler for message history
+        socket.on('message_history', (history) => {
+            const messagesList = document.getElementById('messages');
+            
+            // Clear any existing messages (if reconnecting)
+            messagesList.innerHTML = '';
+            
+            // Add each message from history
+            history.forEach(msg => {
+                const listItem = document.createElement('li');
+                
+                // Create username element
+                const usernameSpan = document.createElement('span');
+                usernameSpan.textContent = `${msg.user}:`;
+                usernameSpan.style.color = getUsernameColor(msg.user);
+                usernameSpan.classList.add('username');
+                
+                // Create message content element
+                const messageDiv = document.createElement('div');
+                messageDiv.textContent = msg.text;
+                messageDiv.classList.add('message-text');
+                
+                // Create timestamp element
+                const timestampSpan = document.createElement('span');
+                const messageTime = msg.timestamp ? new Date(msg.timestamp) : new Date();
+                timestampSpan.textContent = formatTime(messageTime);
+                timestampSpan.classList.add('timestamp');
+                
+                // Append elements to list item
+                listItem.appendChild(usernameSpan);
+                listItem.appendChild(messageDiv);
+                listItem.appendChild(timestampSpan);
+                
+                messagesList.appendChild(listItem);
+            });
+            
+            // Scroll to the latest message
+            messagesList.scrollTop = messagesList.scrollHeight;
+        });
+
+        // Add this code to your script section
+
+        // Handle mobile keyboard showing/hiding
+        function setupMobileKeyboardHandling() {
+            // Focus handling
+            const messageInput = document.getElementById('messageInput');
+            const usernameInput = document.getElementById('usernameInput');
+            const inputForm = document.getElementById('inputForm');
+            
+            // For iOS devices which often have issues with viewport height
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            function handleFocus() {
+                // Short timeout to let the keyboard appear
+                setTimeout(() => {
+                    // Scroll the focused element into view
+                    this.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // For iOS devices, add a special class
+                    if (isIOS) {
+                        document.body.classList.add('keyboard-open');
+                    }
+                }, 300);
+            }
+            
+            function handleBlur() {
+                if (isIOS) {
+                    document.body.classList.remove('keyboard-open');
+                }
+            }
+            
+            messageInput.addEventListener('focus', handleFocus);
+            messageInput.addEventListener('blur', handleBlur);
+            usernameInput.addEventListener('focus', handleFocus);
+            usernameInput.addEventListener('blur', handleBlur);
+            
+            // Add special class when user interacts with the form to handle touch devices
+            inputForm.addEventListener('touchstart', function() {
+                this.classList.add('is-touching');
+            });
+            
+            // Additional fix for mobile Safari view height issues
+            if (isIOS) {
+                // Set CSS variable for real viewport height
+                function setVhVariable() {
+                    let vh = window.innerHeight * 0.01;
+                    document.documentElement.style.setProperty('--vh', `${vh}px`);
+                }
+                
+                setVhVariable();
+                window.addEventListener('resize', setVhVariable);
+            }
+        }
+
+        // Call the setup function when the page loads
+        window.addEventListener('DOMContentLoaded', setupMobileKeyboardHandling);
     </script>
 </body>
 </html>
