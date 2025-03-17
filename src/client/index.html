@@ -21,7 +21,30 @@
 
         function getUsernameColor(username) {
             if (!userColors[username]) {
-                const colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'];
+                const colors = [
+                    '#3498db', // blu chiaro
+                    '#2ecc71', // verde smeraldo
+                    '#e74c3c', // rosso
+                    '#f39c12', // arancione
+                    '#9b59b6', // viola
+                    '#1abc9c', // acquamarina
+                    '#d35400', // arancione scuro
+                    '#c0392b', // rosso mattone
+                    '#16a085', // verde acqua
+                    '#8e44ad', // viola scuro
+                    '#27ae60', // verde
+                    '#2980b9', // blu
+                    '#f1c40f', // giallo
+                    '#e67e22', // arancione chiaro
+                    '#6c5ce7', // indaco
+                    '#fd79a8', // rosa
+                    '#00cec9', // turchese
+                    '#55efc4', // menta
+                    '#fab1a0', // pesca
+                    '#0984e3', // blu elettrico
+                    '#ffeaa7', // crema
+                    '#74b9ff'  // azzurro cielo
+                ];
                 userColors[username] = colors[Math.floor(Math.random() * colors.length)];
             }
             return userColors[username];

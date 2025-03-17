@@ -1,11 +1,17 @@
 /* Base styles */
+/* Base styles */
+/* Base styles */
 :root {
-    --dark-bg: #1e272e;
-    --darker-bg: #2f3640;
-    --mid-bg: #485460;
-    --light-text: #d2dae2;
-    --dark-text: #1e272e;
-    --accent-color: #ff3f34;
+    --dark-bg: #2d3748;        /* Sfondo principale (blu scuro) */
+    --mid-bg: #1a202c;         /* Sfondo medio per contenitori (quasi nero) */
+    --darker-bg: #4299e1;      /* Sfondo per messaggi e navbar (azzurro) */
+    --light-text: #f7fafc;     /* Testo chiaro principale (bianco sporco) */
+    --dark-text: #2d3748;      /* Testo scuro (blu scuro) */
+    --accent-color: #f6ad55;   /* Colore accent primario (arancione) */
+    --accent-hover: #ed8936;   /* Colore hover per bottoni (arancione più scuro) */
+    --timestamp-color: rgba(247, 250, 252, 0.6); /* Colore timestamp */
+    --scrollbar-color: #4299e1; /* Colore scrollbar (uguale a darker-bg) */
+    --scrollbar-hover: #2b6cb0; /* Colore scrollbar in hover (azzurro scuro) */
     --border-radius: 4px;
     --vh: 1vh;
 }
@@ -56,8 +62,9 @@ body {
 /* Username display */
 .username {
     font-weight: bold;
-    display: block;
-    margin-bottom: 0.25rem;
+    margin-right: 10px;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+    padding: 2px 4px;
 }
 
 .message-text {
