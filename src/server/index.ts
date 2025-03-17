@@ -3,6 +3,8 @@ import http from 'http';
 import { Server } from 'socket.io';
 import path from 'path';
 import fs from 'fs';
+import User from './db/userHandler';
+import connectDB  from './db/dbConnection';
 
 const app = express();
 const serverPort = 49152;
@@ -55,6 +57,8 @@ io.on('connection', (socket) => {
     if (messages.length > 0) {
         socket.emit('message_history', messages);
     }
+
+    
 
     socket.on('message', (msg) => {
         // Add timestamp to message
